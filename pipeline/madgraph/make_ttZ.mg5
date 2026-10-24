@@ -1,0 +1,3 @@
+import model sm
+generate p p > t t~ z
+output /eos/home-p/pkangazi/ZTAG_project/madgraph/MG_ttZ -f

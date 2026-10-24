@@ -1,0 +1,10 @@
+universe       = vanilla
+executable     = run_job5.sh
+arguments      = $(SAMPLE) $(JOB) $(NEVT)
+output         = logs5/$(SAMPLE)_$(JOB).out
+error          = logs5/$(SAMPLE)_$(JOB).err
+log            = logs5/ztag.log
+request_cpus   = 4
+request_memory = 8GB
++JobFlavour    = "workday"
+queue SAMPLE,JOB,NEVT from jobs_v5.txt

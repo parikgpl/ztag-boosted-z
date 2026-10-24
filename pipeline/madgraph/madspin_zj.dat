@@ -1,0 +1,5 @@
+set spinmode onshell
+set max_weight_ps_point 400
+set BW_cut 15
+decay z > b b~
+launch
