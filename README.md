@@ -1,45 +1,53 @@
-# Boosted Z -> b bbar tagger dataset (report + simulation chain)
+# ztag-boosted-z — دادهٔ برچسب‌زنی Z→bb̄ پرانرژی
 
-Four samples at 13 TeV, 20 jobs x 1000 events each: **zj** (pp -> Z j) and **ttZ** (signal, Z -> b bbar),
-**bbbb** and **ttbb** (QCD background). In ttZ and ttbb both tops decay leptonically (e or mu).
+این ریپو همهٔ مراحل ساخت یک دادهٔ شبیه‌سازی‌شده برای شناساگر Z→bb̄ پرانرژی (boosted)، اسکریپت‌های تحلیل و شکل‌ها، و گزارش فارسی (XePersian LaTeX) را نگه می‌دارد. داده‌های بزرگ (فایل‌های LHE، HepMC، ROOT و h5) در ریپو نیست و روی EOS (`/eos/user/p/pkangazi/ZTAG_project`) می‌ماند.
 
-## Layout
-* `report/`    the Persian (XePersian) report: `Report.tex`, chapters, `Report.bib`, `figs/` (all figures are PDF).
-* `pipeline/`  everything that produces the data: MadGraph process scripts, MadSpin cards, run/cuts cards,
-  the modified `cuts.f` (ttbb, bbbb), Pythia shower program, Delphes CMS card, FastJet jet-feature program,
-  HTCondor submit and job scripts.
-* `analysis/`  everything after production: HDF5 building, cutflow and origin tables, figure scripts,
-  and the stage-by-stage studies of the Z boson (LHE level, polarisation, ancestry).
+## زنجیرهٔ شبیه‌سازی
 
-## Chain (one HTCondor job per sample and job number)
-MadGraph 3.5.3 -> MadSpin -> Pythia 8.312 -> Delphes (CMS card) -> FastJet anti-kT R=0.8 (pT > 20 GeV stored).
-One random seed per job is used in all stages. The output of every stage is kept in
-`stages/v5/<sample>_<job>/` (`1_madgraph.lhe.gz`, `2_madspin.lhe.gz`, `3_pythia.hepmc.gz`, `4_delphes.root`,
-`5_jets.root`); jet features go to `fastjet/out/v5/`. The data are not in this repository
-(`/eos/user/p/pkangazi/ZTAG_project/{stages,fastjet/out,h5}/v5`).
-Job 326 of bbbb produced only 373 events in MadGraph and was replaced by job 340.
+MadGraph 3.5.3 ← MadSpin ← Pythia 8.312 ← Delphes (کارت CMS) ← FastJet (anti-kT با R=0.8)، در 13 TeV.
 
-## Reproduce
-1. `source /cvmfs/sft.cern.ch/lcg/views/LCG_106/x86_64-el9-gcc13-opt/setup.sh`
-2. Create the processes with `pipeline/madgraph/make_*.mg5`, copy the run cards and the modified `cuts.f`
-   (ttbb, bbbb) into the process directories, and use the MadSpin cards.
-3. Build `pipeline/pythia/shower_lhe.cc` and `pipeline/fastjet/jetfeat4.cc` (see below).
-4. From an AFS directory (HTCondor does not accept submit files on /eos): `condor_submit pipeline/condor/ztag5.sub`
-   (`jobs_v5.txt` = sample, job number, events).
-5. `analysis/cutflow_origin.py` (cutflow and origin figures), `analysis/make_h5.py` (HDF5 dataset),
-   `analysis/final_plots*.py`, `analysis/plot_cons.py` (report figures), `analysis/lhe_stages.py`, `pol.py`,
-   `zsplit.py`, `anc.py`, `shat_y_zpt.py`, `jet_numbers.py` (numbers and figures of the Z studies).
-6. Report: `cd report; xelatex Report.tex; biber Report; xelatex Report.tex; xelatex Report.tex`
-   (fonts: B Nazanin, TeX Gyre Termes).
+چهار نمونه داریم و برای هر کدام ۲۰ job با ۱۰۰۰ رویداد (۲۰۰۰۰ رویداد):
 
-## Building the executables
+- `zj` (Z+jet) و `ttZ`: سیگنال، با برش `pt_min_pdg {23:400}` روی Z و واپاشی Z→bb̄ با MadSpin.
+- `ttbb` و `bbbb`: پس‌زمینه. در ttbb یک زوج bb̄ با pT>400 GeV و ΔR(b,b̄)<0.8 لازم است. در bbbb زوج‌بندی با کمترین مجموع ΔR انجام می‌شود و هر دو زوج باید pT>400 و ΔR<0.8 داشته باشند (تابع `bbbb_cut` در `cuts.f`). برای bbbb کارت MadSpin نداریم.
 
-`pipeline/build.sh` compiles `shower_lhe` (Pythia8 + HepMC3) and `jetfeat4`
-(ROOT + FastJet + fjcontrib). Both commands were tested on lxplus with the
-LCG_106 view; `jetfeat4` needs `LD_LIBRARY_PATH` to include the view's `lib` directory at run time.
+بذر هر job برابر `ID*10000+J+1000` است و در MadGraph (`iseed`)، MadSpin، Pythia و Delphes یکسان به کار می‌رود و در `seeds.txt` هر job ثبت می‌شود. خروجی هر مرحله نگه داشته می‌شود (`stages/v5/`) تا Z در مرحله‌های مختلف قابل مقایسه باشد.
 
-## Job numbering
+## ساختار ریپو
 
-Job numbers are not contiguous for every sample (e.g. the bbbb jobs are
-300-306, 308-310, 312, 313, 316-320, 324-326, with 326 replaced by 340);
-use `jobs_v5.txt` rather than a numeric range.
+- `pipeline/madgraph/`: کارت‌های ساخت فرایندها (`make_*.mg5`)، کارت‌های MadSpin (`madspin_*.dat`) و پوشهٔ هر فرایند `MG_*/` با `proc_card_mg5.dat` و `run_card.dat` (برای ttbb و bbbb با `cuts.f`).
+- `pipeline/pythia/shower_lhe.cc`: بارش پارتونی با Pythia از فایل LHE و خروجی HepMC3.
+- `pipeline/delphes/delphes_card_CMS.tcl`: کارت شبیه‌سازی آشکارساز CMS.
+- `pipeline/fastjet/jetfeat4.cc`: همهٔ جت‌های anti-kT با R=0.8 هر رویداد، برچسب‌های درستی (truth) و ویژگی‌های زیرساختار، و ۱۷ ویژگی برای ۱۰۰ ذرهٔ سخت‌تر هر جت.
+- `pipeline/condor/`: `run_job5.sh` (یک job کامل)، `ztag5.sub` (فایل HTCondor) و `jobs_v5.txt` (فهرست jobها).
+- `pipeline/build.sh`: کامپایل `shower_lhe` و `jetfeat4` (آزموده‌شده روی lxplus با LCG_106).
+- `analysis/`: اسکریپت‌های تحلیل و شکل (پایین).
+- `report/`: متن گزارش (`Report.tex`، `Report.bib`، `part*.tex`، `appendixA.tex`)، لوگوها، `figs/` (شکل‌های برداری PDF) و `Report.pdf`.
+
+## اسکریپت‌های analysis
+
+- `make_h5.py`: ساخت دادهٔ h5 (`jet_features.h5` و `events.h5`) از خروجی ROOT.
+- `cutflow_origin.py`: جدول برش‌ها و منشأ جت‌ها (Z کامل، Z جزئی، جفت bb و ...) و شکل‌های `cutflow_stacked` و `origin_fractions`.
+- `final_plots.py` و `final_plots_partial.py`: شکل‌های مجموعه‌های ۱ تا ۴ برای جت‌های کامل و جزئی.
+- `plot_cons.py`: شکل ویژگی‌های ۱۰ ذرهٔ اول جت (هر ویژگی در یک صفحه).
+- `stage_overview.py`: نمای کلی مقایسهٔ مرحله‌ها.
+- `lhe_stages.py`: توزیع ویژگی‌های Z در خروجی MadGraph و MadSpin (شکل‌های `lhe_*`).
+- `pol.py`: قطبش Z از cosθ* در دستگاه سکون Z، با f_L = 2 − 5⟨cos²θ*⟩ (فرض دو حالت T و L، خطای آماری).
+- `zsplit.py`: تقسیم انرژی بین دو b، یعنی z و √(z(1−z)).
+- `shat_y_zpt.py`: √ŝ، تندی y سیستم و pT زد.
+- `anc.py`: بررسی اجداد ذرات (آلودگی از واپاشی تاپ).
+- `jetdata.py` و `jet_numbers.py`: بارگذاری جدول جت‌ها و عددهای خلاصه (توضیح در سرفایل هر کدام).
+
+## اجرا
+
+1. کامپایل: `bash pipeline/build.sh`
+2. ارسال jobها: `condor_submit pipeline/condor/ztag5.sub` (فهرست jobها در `jobs_v5.txt`؛ شمارهٔ jobهای bbbb پیوسته نیست: ۳۰۰–۳۰۶، ۳۰۸–۳۱۰، ۳۱۲، ۳۱۳، ۳۱۶–۳۲۰، ۳۲۴–۳۲۶ که ۳۲۶ با ۳۴۰ جایگزین شده).
+3. ساخت h5: `python3 analysis/make_h5.py <ورودی fastjet/out/v5> <خروجی h5/v5>`
+4. شکل‌ها و جدول‌ها: `python3 analysis/cutflow_origin.py <ورودی> <خروجی>` و بقیهٔ اسکریپت‌ها.
+5. گزارش: داخل `report/` دوبار `xelatex -interaction=nonstopmode Report.tex`.
+
+برای اجرای jetfeat4 باید `LD_LIBRARY_PATH` شامل `lib` همان view باشد.
+
+## کدگذاری داده
+
+نمونه: 0=zj، 1=ttZ، 2=bbbb، 3=ttbb. منشأ جت: 1=کامل، 2=جزئی. برچسب: 1=سیگنال، 0=پس‌زمینه.
