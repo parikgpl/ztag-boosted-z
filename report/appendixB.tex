@@ -1,0 +1,16 @@
+\section{ویژگی‌های ذرات تشکیل‌دهنده در داده}
+\label{app:cons}
+برای هر جتی که برش‌های تحلیل را بگذراند ($\pt>400$~\lr{GeV}، $|\eta|<2$ و دست‌کم ۳ ذره تشکیل‌دهنده)، ۱۷ ویژگی برای حداکثر ۱۰۰ ذره تشکیل‌دهنده ذخیره شده است. ذره‌ها به ترتیب $\pt$ مرتب می‌شوند و سخت‌ترین اول می‌آید؛ جت‌هایی که کمتر از ۱۰۰ ذره دارند با صفر پر می‌شوند. ورودی خوشه‌بندی سه چیز است: ردهای باردار با نوع ذره‌ای که \lr{Delphes} می‌دهد (علامت‌دار)، برجک‌های فوتونی که نوع ۲۲ می‌گیرند و برجک‌های هادرون خنثی که نوع ۱۳۰ می‌گیرند.
+
+شش ویژگی اول تکانه و انرژی ذره در دستگاه آزمایشگاه‌اند: $p_x$، $p_y$، $p_z$، $E$، $E/E_\mathrm{jet}$ و $\pt$، و بعد از آن $p_T/p_{T,\mathrm{jet}}$. ویژگی‌های زاویه‌ای هشت‌تایی هستند: $\eta$، $\eta-\eta_\mathrm{jet}$، $\eta_\mathrm{rot}$، $\varphi$، $\varphi-\varphi_\mathrm{jet}$، $\varphi_\mathrm{rot}$ و فاصله $\Delta R=\sqrt{(\eta-\eta_\mathrm{jet})^2+(\varphi-\varphi_\mathrm{jet})^2}$ ذره تا محور جت، که در همه این‌ها اختلاف $\varphi$ به بازه $(-\pi,\pi]$ برگردانده می‌شود. دو ویژگی زاویه‌ای باقی‌مانده $\cos\theta=p_z/|\vec p|$ (زاویه قطبی نسبت به محور پرتو) و $\cos\theta_\mathrm{rel}=\vec p\cdot\vec p_\mathrm{jet}/(|\vec p|\,|\vec p_\mathrm{jet}|)$ (زاویه نسبت به محور جت) هستند. ویژگی هفدهم، نوع ذره $\mathrm{pdgId}$ است.
+
+مختصات چرخیده را این‌طور می‌سازیم. اگر $(\eta_0,\varphi_0)$ موقعیت سخت‌ترین ذره و $(\eta_1,\varphi_1)$ موقعیت دومین ذره باشد، تعریف می‌کنیم $x_i=\eta_i-\eta_0$ و $y_i=\varphi_i-\varphi_0$ (با برگرداندن به $(-\pi,\pi]$). با زاویه
+\begin{equation}
+\alpha=\operatorname{atan2}(y_1,x_1),\qquad \vartheta=-\frac{\pi}{2}-\alpha
+\end{equation}
+مختصات چرخیده هر ذره چنین است:
+\begin{equation}
+\eta_{\mathrm{rot},i}=x_i\cos\vartheta-y_i\sin\vartheta,\qquad
+\varphi_{\mathrm{rot},i}=x_i\sin\vartheta+y_i\cos\vartheta .
+\end{equation}
+برای دومین ذره، با $x_1=r\cos\alpha$ و $y_1=r\sin\alpha$ که $r$ فاصله آن تا سخت‌ترین ذره است، داریم $\eta_{\mathrm{rot},1}=r\cos(\alpha+\vartheta)=r\cos(-\pi/2)=0$ و $\varphi_{\mathrm{rot},1}=r\sin(\alpha+\vartheta)=r\sin(-\pi/2)=-r$. یعنی سخت‌ترین ذره در مبدأ و دومین ذره روی محور منفی $\varphi$ چرخیده قرار می‌گیرد؛ به همین دلیل $\eta_\mathrm{rot}$ دومین ذره همیشه صفر (در حد خطای عددی) و $\varphi_\mathrm{rot}$ آن همیشه نامثبت است و $\varphi_\mathrm{rot}$ سخت‌ترین ذره همیشه صفر است. این دو ویژگی ثابت اطلاعاتی ندارند و برای ذره‌های دیگر فقط شکل نسبی خوشه‌های ذره‌ها را نشان می‌دهند. نمودار همه این ویژگی‌ها در بخش~\ref{sec:particles} آمده است.

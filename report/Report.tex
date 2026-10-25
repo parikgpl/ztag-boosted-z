@@ -7,6 +7,7 @@
 \usepackage{hyperref}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{booktabs}
+\usepackage{float}
 \usepackage{xepersian}
 
 \settextfont{B Nazanin}
@@ -24,19 +25,31 @@
 \newcommand{\bb}{\ensuremath{\mathrm{b}\bar{\mathrm{b}}}\xspace}
 \newcommand{\Zbb}{\ensuremath{\mathrm{Z}\to\mathrm{b}\bar{\mathrm{b}}}\xspace}
 \newcommand{\ttbb}{\ensuremath{\mathrm{t}\bar{\mathrm{t}}\mathrm{b}\bar{\mathrm{b}}}\xspace}
+\newcommand{\bbbb}{\ensuremath{\mathrm{b}\bar{\mathrm{b}}\mathrm{b}\bar{\mathrm{b}}}\xspace}
+\newcommand{\Zjet}{\ensuremath{\mathrm{Z{+}jet}}\xspace}
 \newcommand{\ttZ}{\ensuremath{\mathrm{t}\bar{\mathrm{t}}\mathrm{Z}}\xspace}
 
 \newcommand{\quadfig}[6]{%
-\begin{figure}[!ht]\centering
+\begin{figure}[H]\centering
 \includegraphics[width=0.48\textwidth]{#1}\hfill\includegraphics[width=0.48\textwidth]{#2}\\[3pt]
 \includegraphics[width=0.48\textwidth]{#3}\hfill\includegraphics[width=0.48\textwidth]{#4}
 \caption{#5}\label{#6}
 \end{figure}}
 \newcommand{\widefig}[3]{%
-\begin{figure}[!ht]\centering
+\begin{figure}[H]\centering
 \includegraphics[width=\textwidth]{#1}
 \caption{#2}\label{#3}
 \end{figure}}
+\newcommand{\gridfig}[3]{%
+\begin{figure}[H]\centering
+\includegraphics[width=0.245\textwidth]{#1_pt}\hfill\includegraphics[width=0.245\textwidth]{#1_eta}\hfill\includegraphics[width=0.245\textwidth]{#1_mass}\hfill\includegraphics[width=0.245\textwidth]{#1_msd}\\[2pt]
+\includegraphics[width=0.245\textwidth]{#1_girth}\hfill\includegraphics[width=0.245\textwidth]{#1_nconst}\hfill\includegraphics[width=0.245\textwidth]{#1_tau1}\hfill\includegraphics[width=0.245\textwidth]{#1_tau2}\\[2pt]
+\includegraphics[width=0.245\textwidth]{#1_tau3}\hfill\includegraphics[width=0.245\textwidth]{#1_tau21}\hfill\includegraphics[width=0.245\textwidth]{#1_tau32}\hfill\includegraphics[width=0.245\textwidth]{#1_c2}\\[2pt]
+\includegraphics[width=0.245\textwidth]{#1_d2}\hfill\includegraphics[width=0.245\textwidth]{#1_n2}\hfill\includegraphics[width=0.245\textwidth]{#1_zg}\hfill\includegraphics[width=0.245\textwidth]{#1_rg}
+\caption{#2}\label{#3}
+\end{figure}}
+\newcommand{\Zbos}{\ensuremath{\mathrm{Z}}}
+\newcommand{\bq}{\ensuremath{\mathrm{b}}}
 \begin{document}
 
 \input{title}
@@ -50,7 +63,7 @@
 \input{part4}
 \input{part5}
 \input{part6}
-\input{part7}
+% \input{part7}
 
 \newpage
 \section*{مراجع}
@@ -61,4 +74,5 @@
 \appendix
 \section*{ضمائم}
 \input{appendixA}
+\input{appendixB}
 \end{document}
