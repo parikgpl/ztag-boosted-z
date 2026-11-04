@@ -1,4 +1,4 @@
-\documentclass[14pt]{article}
+\documentclass[14pt]{report}
 \usepackage{setspace}
 \usepackage{enumitem}
 \usepackage{graphicx}
@@ -48,6 +48,7 @@
 \includegraphics[width=0.245\textwidth]{#1_d2}\hfill\includegraphics[width=0.245\textwidth]{#1_n2}\hfill\includegraphics[width=0.245\textwidth]{#1_zg}\hfill\includegraphics[width=0.245\textwidth]{#1_rg}
 \caption{#2}\label{#3}
 \end{figure}}
+\newcommand{\jozeiat}[1]{\par\smallskip\noindent{\small\color{blue}[\,جای افزودن جزئیات: #1\,]}\par\smallskip}
 \newcommand{\Zbos}{\ensuremath{\mathrm{Z}}}
 \newcommand{\bq}{\ensuremath{\mathrm{b}}}
 \begin{document}
@@ -57,6 +58,11 @@
 \tableofcontents
 \newpage
 
+\input{intro_main}
+\input{chapter1}
+
+\chapter{تولید داده برای جداسازی رویدادهای \ttZ از \ttbb}
+\label{ch:data}
 \input{introduction}
 \input{part1}
 \input{part3}
@@ -66,13 +72,14 @@
 % \input{part7}
 
 \newpage
-\section*{مراجع}
+\chapter*{مراجع}
+\addcontentsline{toc}{chapter}{مراجع}
 \begin{latin}
 \printbibliography[heading=none]
 \end{latin}
 
 \appendix
-\section*{ضمائم}
+\chapter{ضمائم}
 \input{appendixA}
 \input{appendixB}
 \end{document}
