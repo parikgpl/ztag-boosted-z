@@ -69,6 +69,7 @@
 \input{part4}
 \input{part5}
 \input{part6}
+\input{chapter3}
 % \input{part7}
 
 \newpage
@@ -79,7 +80,14 @@
 \end{latin}
 
 \appendix
-\chapter{ضمائم}
+\chapter*{ضمائم}
+\addcontentsline{toc}{chapter}{ضمائم}
+\setcounter{section}{0}\setcounter{figure}{0}\setcounter{table}{0}\setcounter{equation}{0}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thefigure}{پ.\arabic{figure}}
+\renewcommand{\thetable}{پ.\arabic{table}}
+\renewcommand{\theequation}{پ.\arabic{equation}}
 \input{appendixA}
 \input{appendixB}
+\input{appendixC}
 \end{document}
